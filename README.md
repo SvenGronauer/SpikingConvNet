@@ -13,7 +13,8 @@ Install MNIST dataset into main directory:
 
   ```
       $ git clone https://github.com/sorki/python-mnist
-      $ bash python-mnist/get_data.sh
+      $ cd python-mnist
+      $ bash get_data.sh
   ```
 
 ## Training of Network
@@ -27,8 +28,6 @@ Install MNIST dataset into main directory:
     $ python main.py --mode training --layer svm
     $ python main.py --mode testing
     ```
-
-
 
 ## Classes Module
 
