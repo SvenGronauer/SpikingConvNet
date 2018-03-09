@@ -1,0 +1,7 @@
+# MANIFEST.in
+include *.txt
+recursive-include doc *
+recursive-include python-mnist *
+recursive-include data *
+recursive-include model *
+recursive-include generated_backups *
