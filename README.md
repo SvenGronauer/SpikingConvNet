@@ -7,6 +7,29 @@ on SpiNNaker this additional Python package *SpikingConvNet* can be used. This
 package contains the necessary infrastructure and algorithms to build an
 arbitrarily deep network described as a sequential model.
 
+## Preparation
+
+Install MNIST dataset into main directory:
+
+  ```
+      $ git clone https://github.com/sorki/python-mnist
+      $ bash python-mnist/get_data.sh
+  ```
+
+## Training of Network
+
+    ```
+    $ python main.py --mode loaddata
+    $ python main.py --mode training --layer 1
+    $ python main.py --mode training --layer 2
+    ...
+    $ python main.py --mode training --layer n
+    $ python main.py --mode training --layer svm
+    $ python main.py --mode testing
+    ```
+
+
+
 ## Classes Module
 
 contains the object classes for creating models of the Spiking Neural Networks and the necessary infrastructure for implementing such networks on SpiN- Naker. A SCNN model is built by sequentially adding of convolutional layers to the input layer and a classifier at last.
