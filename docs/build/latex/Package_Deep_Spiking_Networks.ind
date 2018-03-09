@@ -1,0 +1,71 @@
+\begin{sphinxtheindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter A
+  \item add() (SpikingConvNet.classes.SpikingModel method), \hyperpage{8}
+
+  \indexspace
+  \bigletter C
+  \item Classifier (class in SpikingConvNet.classes), \hyperpage{8}
+  \item convert\_rate\_code() (in module SpikingConvNet.utils), \hyperpage{10}
+  \item convert\_time\_code() (in module SpikingConvNet.utils), \hyperpage{10}
+  \item ConvLayer (class in SpikingConvNet.classes), \hyperpage{8}
+
+  \indexspace
+  \bigletter D
+  \item dog\_filter() (in module SpikingConvNet.utils), \hyperpage{10}
+
+  \indexspace
+  \bigletter I
+  \item input\_flattend\_spikes() (in module SpikingConvNet.algorithms), \hyperpage{6}
+  \item input\_windowed\_spikes() (in module SpikingConvNet.algorithms), \hyperpage{6}
+  \item InputLayer (class in SpikingConvNet.classes), \hyperpage{8}
+
+  \indexspace
+  \bigletter L
+  \item Layer (class in SpikingConvNet.classes), \hyperpage{8}
+  \item load\_MNIST\_digits\_shuffled() (in module SpikingConvNet.utils), \hyperpage{11}
+
+  \indexspace
+  \bigletter P
+  \item plot\_confusion\_matrix() (in module SpikingConvNet.utils), \hyperpage{11}
+  \item plot\_heatpmap() (in module SpikingConvNet.utils), \hyperpage{11}
+  \item plot\_membrane\_voltages() (in module SpikingConvNet.utils), \hyperpage{11}
+  \item plot\_spike\_activity() (in module SpikingConvNet.utils), \hyperpage{12}
+  \item plot\_spikes() (in module SpikingConvNet.utils), \hyperpage{12}
+  \item predict() (SpikingConvNet.classes.Classifier method), \hyperpage{8}
+  \item print\_parameters() (SpikingConvNet.classes.Spinnaker\_Network method), \hyperpage{9}
+  \item print\_structure() (SpikingConvNet.classes.SpikingModel method), \hyperpage{8}
+
+  \indexspace
+  \bigletter R
+  \item rebuild\_fixed\_connections() (in module SpikingConvNet.algorithms), \hyperpage{6}
+  \item rebuild\_inhibitory\_connections() (in module SpikingConvNet.algorithms), \hyperpage{7}
+  \item retrieve\_data() (SpikingConvNet.classes.Spinnaker\_Network method), \hyperpage{9}
+  \item RunControl (class in SpikingConvNet.utils), \hyperpage{10}
+
+  \indexspace
+  \bigletter S
+  \item setup\_logger() (SpikingConvNet.utils.RunControl method), \hyperpage{10}
+  \item spikes\_for\_classifier() (in module SpikingConvNet.algorithms), \hyperpage{7}
+  \item SpikingConvNet (module), \hyperpage{5}
+  \item SpikingConvNet.algorithms (module), \hyperpage{6}
+  \item SpikingConvNet.classes (module), \hyperpage{8}
+  \item SpikingConvNet.parameters (module), \hyperpage{10}
+  \item SpikingConvNet.utils (module), \hyperpage{10}
+  \item SpikingModel (class in SpikingConvNet.classes), \hyperpage{8}
+  \item Spinnaker\_Network (class in SpikingConvNet.classes), \hyperpage{8}
+
+  \indexspace
+  \bigletter T
+  \item train() (SpikingConvNet.classes.Classifier method), \hyperpage{8}
+
+  \indexspace
+  \bigletter U
+  \item update\_kernel\_weights() (SpikingConvNet.classes.Spinnaker\_Network method), \hyperpage{9}
+
+  \indexspace
+  \bigletter W
+  \item windowed\_spikes() (in module SpikingConvNet.algorithms), \hyperpage{7}
+
+\end{sphinxtheindex}

@@ -1,0 +1,37 @@
+\indexentry{SpikingConvNet.algorithms (module)|hyperpage}{5}
+\indexentry{input\_flattend\_spikes() (in module SpikingConvNet.algorithms)|hyperpage}{5}
+\indexentry{input\_windowed\_spikes() (in module SpikingConvNet.algorithms)|hyperpage}{5}
+\indexentry{rebuild\_fixed\_connections() (in module SpikingConvNet.algorithms)|hyperpage}{5}
+\indexentry{rebuild\_inhibitory\_connections() (in module SpikingConvNet.algorithms)|hyperpage}{6}
+\indexentry{spikes\_for\_classifier() (in module SpikingConvNet.algorithms)|hyperpage}{6}
+\indexentry{windowed\_spikes() (in module SpikingConvNet.algorithms)|hyperpage}{6}
+\indexentry{SpikingConvNet.classes (module)|hyperpage}{7}
+\indexentry{Classifier (class in SpikingConvNet.classes)|hyperpage}{7}
+\indexentry{classify() (SpikingConvNet.classes.Classifier method)|hyperpage}{7}
+\indexentry{train() (SpikingConvNet.classes.Classifier method)|hyperpage}{7}
+\indexentry{ConvLayer (class in SpikingConvNet.classes)|hyperpage}{7}
+\indexentry{InputLayer (class in SpikingConvNet.classes)|hyperpage}{7}
+\indexentry{Layer (class in SpikingConvNet.classes)|hyperpage}{7}
+\indexentry{SpikingModel (class in SpikingConvNet.classes)|hyperpage}{7}
+\indexentry{add() (SpikingConvNet.classes.SpikingModel method)|hyperpage}{7}
+\indexentry{calculate\_tensors() (SpikingConvNet.classes.SpikingModel method)|hyperpage}{7}
+\indexentry{print\_structure() (SpikingConvNet.classes.SpikingModel method)|hyperpage}{7}
+\indexentry{Spinnaker\_Network (class in SpikingConvNet.classes)|hyperpage}{7}
+\indexentry{print\_parameters() (SpikingConvNet.classes.Spinnaker\_Network method)|hyperpage}{8}
+\indexentry{retrieve\_data() (SpikingConvNet.classes.Spinnaker\_Network method)|hyperpage}{8}
+\indexentry{update\_kernel\_weights() (SpikingConvNet.classes.Spinnaker\_Network method)|hyperpage}{8}
+\indexentry{SpikingConvNet.parameters (module)|hyperpage}{8}
+\indexentry{SpikingConvNet.utils (module)|hyperpage}{8}
+\indexentry{RunControl (class in SpikingConvNet.utils)|hyperpage}{8}
+\indexentry{setup\_logger() (SpikingConvNet.utils.RunControl method)|hyperpage}{8}
+\indexentry{convert\_rate\_code() (in module SpikingConvNet.utils)|hyperpage}{8}
+\indexentry{convert\_time\_code() (in module SpikingConvNet.utils)|hyperpage}{8}
+\indexentry{dog\_filter() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{load\_MNIST\_digits\_ordered() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{load\_MNIST\_digits\_shuffled() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{plot\_confusion\_matrix() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{plot\_heatpmap() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{plot\_membran\_voltages() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{plot\_spike\_activity() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{plot\_spikes() (in module SpikingConvNet.utils)|hyperpage}{9}
+\indexentry{SpikingConvNet (module)|hyperpage}{9}

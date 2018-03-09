@@ -1,0 +1,38 @@
+trianglelib package
+===================
+
+Submodules
+----------
+
+trianglelib\.shape module
+-------------------------
+
+.. automodule:: trianglelib.shape
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trianglelib\.tests module
+-------------------------
+
+.. automodule:: trianglelib.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trianglelib\.utils module
+-------------------------
+
+.. automodule:: trianglelib.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: trianglelib
+    :members:
+    :undoc-members:
+    :show-inheritance:

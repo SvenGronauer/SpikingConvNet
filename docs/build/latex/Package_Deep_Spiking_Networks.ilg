@@ -1,0 +1,7 @@
+This is makeindex, version 2.15 [TeX Live 2015] (kpathsea + Thai support).
+Scanning style file ./python.ist.......done (7 attributes redefined, 0 ignored).
+Scanning input file Package_Deep_Spiking_Networks.idx....done (35 entries accepted, 0 rejected).
+Sorting entries....done (184 comparisons).
+Generating output file Package_Deep_Spiking_Networks.ind....done (71 lines written, 0 warnings).
+Output written in Package_Deep_Spiking_Networks.ind.
+Transcript written in Package_Deep_Spiking_Networks.ilg.

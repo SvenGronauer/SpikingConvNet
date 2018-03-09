@@ -1,0 +1,804 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SpikingConvNet package &#8212; Python Package for Building Deep Spiking Convolutional Neural Networks 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Miscellaneous" href="misc.html" />
+    <link rel="prev" title="SpikingConvNet" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="spikingconvnet-package">
+<h1>SpikingConvNet package<a class="headerlink" href="#spikingconvnet-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-SpikingConvNet">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SpikingConvNet" title="Permalink to this headline">¶</a></h2>
+<p>Package for building Spiking Deep Convolutional Neural Networks on SpiNNaker</p>
+<ul class="simple">
+<li>Neuroscientific System Theory</li>
+<li>Technical University Munich</li>
+<li>Creator:    Sven Gronauer</li>
+<li>Date:       February 2018</li>
+</ul>
+<p>contains the necessary infrastructure and algorithms to build an arbitrarily deep
+network described as a sequential model. The package SpikingConvNet is divided
+into three modules, which will be proposed in the following:</p>
+<p><code class="docutils literal"><span class="pre">Classes</span> <span class="pre">Module</span></code></p>
+<blockquote>
+<div>contains the object classes for creating models of the Spiking Neural Networks
+and the necessary infrastructure for implementing such networks on SpiN-
+Naker. A SCNN model is built by sequentially adding of convolutional layers
+to the input layer and a classifier at last.
+The Spinnaker Network class holds instances and methods to interact with
+the SpiNNaker board. The structure is based on PyNNs procedure of creating
+Spiking Networks. Neurons belonging to a particular layer of the neural net-
+work and share common properties are packed into populations. Projections
+establish connections between populations. The strength of a connection is
+expressed by a numerical value, the synaptic weight that either increases the
+membrane potential of the post-neuron (exhibitory) or lessens the membrane
+potential (inhibitory).
+The model is defined on the host-computer and then transferred to the SpiN-
+Naker board, where the simulation is processed. When the simulation finishes,
+data are retrieved back to the host-computer and post-processed.</div></blockquote>
+<p><code class="docutils literal"><span class="pre">Algorithms</span> <span class="pre">Module</span></code></p>
+<blockquote>
+<div>provides functions for generating sparse connections between neural popula-
+tions. The so-called projections between populations are employed by con-
+nection lists, which are automatically built by considering the tensors of the
+layers to be connected. Stride and kernel size specify the particular tensor of
+the posterior layer by T_n+1 = (T_n - shape)/stride + 1.
+In addition, the algorithms module supports the transformation of spiketrains.
+Training deeper layers requires the network of the previous layers to be rebuilt14
+CHAPTER 4. PYTHON PACKAGE
+to obtain previous spiketrains. These spiketrains are transformed into plain
+times to assign them to a spiking source array and train the actual layer with
+the STDP update rule by windowing the input pattern over several time in-
+stances. The training of the network is done layer by layer, hence the input
+spikes of the currently trained layer depend on the previous layer. So a new
+simulation cycle is started when a deeper layer is trained. Because the synap-
+tic weights of previous layers are already determined, the previous layers are
+rebuild as parallel entities and therefore profit in terms of computational speed.</div></blockquote>
+<p><code class="docutils literal"><span class="pre">Parameters</span> <span class="pre">Module</span></code></p>
+<blockquote>
+<div>This file holds all important constants and parameters for controlling and
+setting up the simulation.</div></blockquote>
+<p><code class="docutils literal"><span class="pre">Utils</span> <span class="pre">Module</span></code></p>
+<blockquote>
+<div>Supporting functions to visualise and handle data. The training and test set
+of the Spiking Neural Network is obtained by the MNIST dataset. Loading
+a specified subset of MNIST digits defined in parameters.py and supplies the
+network algorithms a shuffled set of data points.
+Processed data is visualised with the plotting functions: convolutional kernels
+can be plotted with heatmaps, spike times of each neuron along the time axis
+and the membrane voltages over time.</div></blockquote>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-SpikingConvNet.algorithms">
+<span id="spikingconvnet-algorithms-module"></span><h2>SpikingConvNet.algorithms module<a class="headerlink" href="#module-SpikingConvNet.algorithms" title="Permalink to this headline">¶</a></h2>
+<p>Algorithms are provided for</p>
+<ul class="simple">
+<li>Generating sparse connections between populations</li>
+<li>Slice a layer into windows and split windows over time</li>
+</ul>
+<dl class="function">
+<dt id="SpikingConvNet.algorithms.input_flattend_spikes">
+<code class="descclassname">SpikingConvNet.algorithms.</code><code class="descname">input_flattend_spikes</code><span class="sig-paren">(</span><em>X_train</em>, <em>tensor_input</em>, <em>kernel_shape</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.algorithms.input_flattend_spikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create flattened SpikeSourceArray for input neurons
+for instance in rebuilding network</p>
+<p>For rebuilding the network structure the input neurons are not windowed
+over time. Instead, the input layer is flattened and the entire image is
+presented to the network in each simulation interval.
+The corresponding spiketimes depend on pixel intensities and are
+stochastically rate-coded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X_train</strong> (<em>np.array, shape = [n_examples, image_intensities.flatten()]</em>) – dataset of MNIST input images as 2d-array</li>
+<li><strong>tensor_input</strong> (<em>tuple of int</em>) – Dimensions of input layer</li>
+<li><strong>kernel_shape</strong> (<em>tuple of int</em>) – Kernel shape</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>spiketrains</strong> – Each datapoint contains precise spike times for each input neuron</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.array, shape = [n_examples, spike_times]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.algorithms.input_windowed_spikes">
+<code class="descclassname">SpikingConvNet.algorithms.</code><code class="descname">input_windowed_spikes</code><span class="sig-paren">(</span><em>X_train</em>, <em>tensor_input</em>, <em>kernel_shape</em>, <em>stride</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.algorithms.input_windowed_spikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create windowed SpikeSourceArray for input neurons
+for instance in training layers of the network</p>
+<p>Input patterns are windowed over time, post-neurons are presented only
+a subset of the input pattern. The corresponding spiketimes depend on
+pixel intensities and are stochastically rate-coded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X_train</strong> (<em>np.array, shape = [n_examples, image_intensities.flatten()]</em>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>spiketrains</strong> – Each datapoint contains precise spike times for each input neuron</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.array, shape = [n_examples*n_windows, spike_times]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.algorithms.rebuild_fixed_connections">
+<code class="descclassname">SpikingConvNet.algorithms.</code><code class="descname">rebuild_fixed_connections</code><span class="sig-paren">(</span><em>tensor_first</em>, <em>tensor_second</em>, <em>kernel_shape</em>, <em>stride</em>, <em>weights_tensor</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.algorithms.rebuild_fixed_connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct fixed connections between flattened layers</p>
+<p>Take previously learned STDP weights and establish fixed weights.
+The computation is handled now in parallel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tensor_first</strong> (<em>tuple of int</em>) – Dimensions of previous layer</li>
+<li><strong>tensor_second</strong> (<em>tuple of int</em>) – Dimensions of posterior layer</li>
+<li><strong>kernel_shape</strong> (<em>tuple of int</em>) – Kernel shape</li>
+<li><strong>stride</strong> (<em>int</em>) – Specified stride over convolved layer</li>
+<li><strong>weights_tensor</strong> (<em>np.array, shape=[n_kernel, kernel_height*kernel_width]</em>) – Previously trained STDP weights, now initialized as fixed weights</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>connection_list</strong> – list for s.FromListConnector()</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of [position_1, position_2, weight , delay]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.algorithms.rebuild_inhibitory_connections">
+<code class="descclassname">SpikingConvNet.algorithms.</code><code class="descname">rebuild_inhibitory_connections</code><span class="sig-paren">(</span><em>tensor_prev</em>, <em>tensor_layer</em>, <em>inhib_weight</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.algorithms.rebuild_inhibitory_connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct inhibitory connections within flattened layers</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tensor_prev</strong> (<em>tuple of int</em>) – Dimensions of previous layer</li>
+<li><strong>tensor_layer</strong> (<em>tuple of int</em>) – Dimensions of actual layer</li>
+<li><strong>inhib_weight</strong> (<em>float32</em>) – fixed weight for inhibitory connection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>inhib_connection_list</strong> – list for s.FromListConnector()</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of [position_1, position_2, weight , delay]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.algorithms.spikes_for_classifier">
+<code class="descclassname">SpikingConvNet.algorithms.</code><code class="descname">spikes_for_classifier</code><span class="sig-paren">(</span><em>rc</em>, <em>tensor</em>, <em>spiketrains</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.algorithms.spikes_for_classifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform spiketrains to plain two-dimensional dataset</p>
+<p>to reduce the power of Support Vector Machine, the quantity of spikes
+within each simulation interval is counted for each neuron in the last
+layer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tensor</strong> (<em>tuple of int</em>) – Tensor of last Convolutional layer in network</li>
+<li><strong>spiketrains</strong> (<em>SpikeTrain object</em>) – Retrieved spikes from last layer on SpiNNaker board
+SpikeTrains objects are extracted from Neo Block Segments</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X</strong> – Each datapoint contains number of spikes for each post-neuron
+within one sim interval</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.array, shape = [datapoints, n_neurons_last_layer]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.algorithms.windowed_spikes">
+<code class="descclassname">SpikingConvNet.algorithms.</code><code class="descname">windowed_spikes</code><span class="sig-paren">(</span><em>spiketrains_input</em>, <em>tensor_first</em>, <em>tensor_second</em>, <em>kernel_shape</em>, <em>stride</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.algorithms.windowed_spikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create windowed SpikeSourceArray
+for instance in training deeper layers of the network</p>
+<p>Input spiketrains are windowed over time, post-neurons are presented only
+a subset of the input spiketrains. The corresponding output spiketimes
+depend on calculated spikes (spiketrains_input) of previous layer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spiketrains_input</strong> (<em>SpikeTrain object</em>) – Spiketrains from previous layer</li>
+<li><strong>tensor_first</strong> (<em>tuple of int</em>) – Dimensions of previous layer</li>
+<li><strong>tensor_second</strong> (<em>tuple of int</em>) – Dimensions of posterior layer</li>
+<li><strong>kernel_shape</strong> (<em>tuple of int</em>) – Kernel shape</li>
+<li><strong>stride</strong> (<em>int</em>) – Specified stride over convolved layer</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>spiketrains</strong> – Each datapoint contains precise spike times for each neuron</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.array, shape = [n_examples*windows, spike_times]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SpikingConvNet.classes">
+<span id="spikingconvnet-classes-module"></span><h2>SpikingConvNet.classes module<a class="headerlink" href="#module-SpikingConvNet.classes" title="Permalink to this headline">¶</a></h2>
+<p>This module provides classes for creating objects of the neural network
+model and the necessary infracture for building networks on SpiNNaker</p>
+<p>Classes are namely:</p>
+<ul class="simple">
+<li>Layer</li>
+<li>InputLayer(Layer)</li>
+<li>ConvLayer(Layer)</li>
+<li>Classifier(Layer)</li>
+<li>SpikingModel</li>
+<li>Spinnaker_Network</li>
+</ul>
+<dl class="class">
+<dt id="SpikingConvNet.classes.Classifier">
+<em class="property">class </em><code class="descclassname">SpikingConvNet.classes.</code><code class="descname">Classifier</code><a class="headerlink" href="#SpikingConvNet.classes.Classifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SpikingConvNet.classes.Layer" title="SpikingConvNet.classes.Layer"><code class="xref py py-class docutils literal"><span class="pre">SpikingConvNet.classes.Layer</span></code></a></p>
+<p>Holds a linear Support Vector Machine for classifying</p>
+<dl class="method">
+<dt id="SpikingConvNet.classes.Classifier.predict">
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X_test</em>, <em>y_test</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.Classifier.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine classification accuracy of SVC with given Testset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SpikingConvNet.classes.Classifier.train">
+<code class="descname">train</code><span class="sig-paren">(</span><em>X_train</em>, <em>y_train</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.Classifier.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train parameters of SVM model with given Trainset</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="SpikingConvNet.classes.ConvLayer">
+<em class="property">class </em><code class="descclassname">SpikingConvNet.classes.</code><code class="descname">ConvLayer</code><span class="sig-paren">(</span><em>kernels</em>, <em>shape</em>, <em>stride</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.ConvLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SpikingConvNet.classes.Layer" title="SpikingConvNet.classes.Layer"><code class="xref py py-class docutils literal"><span class="pre">SpikingConvNet.classes.Layer</span></code></a></p>
+<p>Specify a convolutional layer of the network</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="SpikingConvNet.classes.InputLayer">
+<em class="property">class </em><code class="descclassname">SpikingConvNet.classes.</code><code class="descname">InputLayer</code><span class="sig-paren">(</span><em>tensor</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.InputLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SpikingConvNet.classes.Layer" title="SpikingConvNet.classes.Layer"><code class="xref py py-class docutils literal"><span class="pre">SpikingConvNet.classes.Layer</span></code></a></p>
+<p>Specifies input layer of network</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="SpikingConvNet.classes.Layer">
+<em class="property">class </em><code class="descclassname">SpikingConvNet.classes.</code><code class="descname">Layer</code><span class="sig-paren">(</span><em>rc</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.Layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class for network layers</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="SpikingConvNet.classes.SpikingModel">
+<em class="property">class </em><code class="descclassname">SpikingConvNet.classes.</code><code class="descname">SpikingModel</code><span class="sig-paren">(</span><em>input_tensor</em>, <em>run_control=None</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.SpikingModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Describes structure of spiking neural network</p>
+<p>A model consists of sequential topology of layers. The first layer is
+provided as an input layer, followed by convolutional layers. The last
+layer should be defined by a Classifier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>input_tensor</strong> (<em>tuple of int</em>) – Size of input patterns as 3d-Tensor</li>
+<li><strong>run_control</strong> (<em>RunControl object</em>) – Holds information of program flow</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="SpikingConvNet.classes.SpikingModel.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>layer</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.SpikingModel.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds sequentially a layer to the network model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SpikingConvNet.classes.SpikingModel.print_structure">
+<code class="descname">print_structure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.SpikingModel.print_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print struture of model in console</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="SpikingConvNet.classes.Spinnaker_Network">
+<em class="property">class </em><code class="descclassname">SpikingConvNet.classes.</code><code class="descname">Spinnaker_Network</code><span class="sig-paren">(</span><em>runcontrol</em>, <em>model</em>, <em>deepspikes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.Spinnaker_Network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class for implementing neural network model on SpiNNaker</p>
+<p>The following steps are processed through calling the class constructor
+(based on PyNN basic setup structure)</p>
+<ol class="arabic simple">
+<li>Initialize with constructor</li>
+<li>Load datasets (Train and Testset) from local files</li>
+<li>Load previously calculated weights for layers (if given in /model)</li>
+<li>Create populations</li>
+<li>Build STDP-model</li>
+<li>Build projections between populations</li>
+<li>Setup recordings</li>
+</ol>
+<p>The following methods must be called from external fuction(s):</p>
+<ul class="simple">
+<li>update_kernel_weights() - Determine current weights in STDP trained layer</li>
+<li>retrieve_data() - Receive recorded data from SpiNNaker</li>
+<li>print_parameters() - Display information of neural network</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>runcotrol</strong> (<em>RunControl object</em>) – Structure that contains basic information for program flow such as
+passed args from terminal command, backup commands, building options
+for SpiNNaker network</li>
+<li><strong>model</strong> (<em>SpikingModel object</em>) – predefined model of spiking neural network</li>
+<li><strong>deepspikes</strong> (<em>Spiketrain object</em>) – training a deeper layer requires preprocessed spikes from previous
+layer, hence training of Spiking Neural Network is done layer by
+layer</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="SpikingConvNet.classes.Spinnaker_Network.print_parameters">
+<code class="descname">print_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.Spinnaker_Network.print_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print parameters of model and simulation to console</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SpikingConvNet.classes.Spinnaker_Network.retrieve_data">
+<code class="descname">retrieve_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.Spinnaker_Network.retrieve_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transmit observed data of spikes and voltages from SpiNNaker Board
+to host computer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>spiketrains</strong> (<em>SpikeTrain object</em>) – Spiketrains from last layer in neural network</li>
+<li><strong>list</strong> (<em>[spikes_in, spikes_1, v_1]</em>) –<ul>
+<li>spikes_in: spiketimes input layer</li>
+<li>spikes_1: spikes post-neurons</li>
+<li>v_1: membrane potentials of post-neurons</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="SpikingConvNet.classes.Spinnaker_Network.update_kernel_weights">
+<code class="descname">update_kernel_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.classes.Spinnaker_Network.update_kernel_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the internal variables of weights</p>
+<p>Receive actual weight values of trained STDP layer from SpiNNaker
+board and store to self.w_layer variable</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">weights, np.array, shape = [n_kernels, flattend_weights]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-SpikingConvNet.parameters">
+<span id="spikingconvnet-parameters-module"></span><h2>SpikingConvNet.parameters module<a class="headerlink" href="#module-SpikingConvNet.parameters" title="Permalink to this headline">¶</a></h2>
+<p>This file holds all important constans and parameters for controlling the
+simulation</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any adjustments applied to this file have an impact to all other files in
+the project!</p>
+</div>
+</div>
+<div class="section" id="module-SpikingConvNet.utils">
+<span id="spikingconvnet-utils-module"></span><h2>SpikingConvNet.utils module<a class="headerlink" href="#module-SpikingConvNet.utils" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for controling program flow, data handling and data plotting</p>
+<dl class="class">
+<dt id="SpikingConvNet.utils.RunControl">
+<em class="property">class </em><code class="descclassname">SpikingConvNet.utils.</code><code class="descname">RunControl</code><span class="sig-paren">(</span><em>args</em>, <em>trainlayer=0</em>, <em>trainsvm=False</em>, <em>rebuild=False</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.RunControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Object for controlling program flow, contains args from console and sets
+up the logging utility</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> (<em>ArgumentParser object</em>) – Passed arguments from terminal command</li>
+<li><strong>trainlayer</strong> (<em>int, optional</em>) – If not zero, specifies which layer of network to train</li>
+<li><strong>trainsvm</strong> (<em>bool, optional</em>) – If given, classifier is trained</li>
+<li><strong>rebuild</strong> (<em>bool, optional</em>) – Controls the behaviour of the follow up build of neural network
+(as a variable of programs state machine)<ul>
+<li><code class="docutils literal"><span class="pre">rebuild==True</span></code> in order to train layer n, the spikes of layer n-1 must be determined</li>
+<li><code class="docutils literal"><span class="pre">rebuild==False</span></code> a layer or the Classifier is trained</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="SpikingConvNet.utils.RunControl.setup_logger">
+<code class="descname">setup_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.RunControl.setup_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup logger for tracking infos and errors</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.convert_rate_code">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">convert_rate_code</code><span class="sig-paren">(</span><em>intensity</em>, <em>total_intensity=None</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.convert_rate_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate code spikes - Assign pixel intensity to stochastic spike times</p>
+<p>calculate spike times dependend on pixel intensity of pre-neuron</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>intensity</strong> (<em>int, [0,255]</em>) – Pixel intensity</li>
+<li><strong>total_intensity</strong> (<em>int</em>) – Sum of intensities of input pattern for normalization</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>spiketimes</strong> – Corresponding spike times for pixel intensity</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list, of int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.convert_time_code">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">convert_time_code</code><span class="sig-paren">(</span><em>intensity</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.convert_time_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time code spikes - Assign pixel intensity to deterministic time interval</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>intensity</strong> (<em>int, [0,255]</em>) – Pixel intensity</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>spiketime</strong> – Corresponding spike time for pixel intensity</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.dog_filter">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">dog_filter</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.dog_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply Difference of Gaussian Filter to image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>np.array, shape=[height, width]</em>) – Image to be transformed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>norm_dog</strong> – Transformed image</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.array, shape=[height, width]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.load_MNIST_digits_shuffled">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">load_MNIST_digits_shuffled</code><span class="sig-paren">(</span><em>rc</em>, <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.load_MNIST_digits_shuffled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load MNIST dataset</p>
+<p>load defined number of examples (see parameters.py)
+loaded subset of digits is defined in SUBSET_DIGITS
+shuffle data and return as 2d-arrays</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rc</strong> (<em>RunControl object</em>) – contains information of backup behaviour</li>
+<li><strong>mode</strong> (<em>str</em>) –<ul>
+<li><code class="docutils literal"><span class="pre">train_examples</span></code> Examples for Trainset are loaded</li>
+<li><code class="docutils literal"><span class="pre">test_examples</span></code> Examples for Testset are loaded</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>f</strong> – Object of figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">figure object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.plot_confusion_matrix">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">plot_confusion_matrix</code><span class="sig-paren">(</span><em>rc</em>, <em>cm</em>, <em>normalize=True</em>, <em>title='Confusion_matrix'</em>, <em>cmap=&lt;matplotlib.colors.LinearSegmentedColormap object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.plot_confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prints and plots a confusion matrix.
+Normalization can be applied by setting <code class="docutils literal"><span class="pre">normalize=True</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rc</strong> (<em>RunControl object</em>) – contains information of backup behaviour</li>
+<li><strong>cm</strong> (<em>np.array,</em>) – Contains values of the confusion matrix</li>
+<li><strong>normalize</strong> (<em>bool</em>) – If <code class="docutils literal"><span class="pre">True</span></code> Matrix is normalized</li>
+<li><strong>title</strong> (<em>str</em>) – defines title of figure and name of saved figure on disk</li>
+<li><strong>cmap</strong> (<em>cm object</em>) – Color scheme of the plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>f</strong> – Object of figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">figure object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.plot_heatpmap">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">plot_heatpmap</code><span class="sig-paren">(</span><em>rc</em>, <em>list_of_elements</em>, <em>title='Default Title'</em>, <em>delta=False</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.plot_heatpmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a matrix of heatmaps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rc</strong> (<em>RunControl object</em>) – contains information of backup behaviour</li>
+<li><strong>list_of_elements</strong> (<em>list</em>) – List of np.arrays with shape=[n,n]</li>
+<li><strong>title</strong> (<em>str</em>) – defines title of figure and name of saved figure on disk</li>
+<li><strong>delta</strong> (<em>bool</em>) – if defined, use dirrential color scheme for heatmap plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>f</strong> – Object of heatmap</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">figure object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.plot_membrane_voltages">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">plot_membrane_voltages</code><span class="sig-paren">(</span><em>rc</em>, <em>v_data</em>, <em>simtime</em>, <em>title='Membrane potentials'</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.plot_membrane_voltages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the membrane potential</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rc</strong> (<em>RunControl object</em>) – contains information of backup behaviour</li>
+<li><strong>v_data</strong> (<em>Voltage Object</em>) – Contains values of the membrane potentials</li>
+<li><strong>simtime</strong> (<em>int</em>) – Maximum simulation time on the x-axis</li>
+<li><strong>title</strong> (<em>str</em>) – defines title of figure and name of saved figure on disk</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>f</strong> – Object of figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">figure object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.plot_spike_activity">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">plot_spike_activity</code><span class="sig-paren">(</span><em>rc</em>, <em>spiketrains</em>, <em>tensor</em>, <em>title='plot_spike_activity'</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.plot_spike_activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the activity of each neurons in the given layer in the first
+simulation interval</p>
+<p>The quantity of spikes for each neuron in the layer (given with tensor
+and its spiketrains) are determined for the first simulation interval
+and then plotted as heatmap</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rc</strong> (<em>RunControl object</em>) – contains information of backup behaviour</li>
+<li><strong>spiketrains</strong> (<em>SpikeTrain Object</em>) – List of np.arrays with shape=[n,n]</li>
+<li><strong>tensor</strong> (<em>tuple of int</em>) – Tensor of Layer</li>
+<li><strong>title</strong> (<em>str</em>) – defines title of figure and name of saved figure on disk</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>f</strong> – Object of figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">figure object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpikingConvNet.utils.plot_spikes">
+<code class="descclassname">SpikingConvNet.utils.</code><code class="descname">plot_spikes</code><span class="sig-paren">(</span><em>rc</em>, <em>pre</em>, <em>post=None</em>, <em>title='Spikes Plot'</em>, <em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#SpikingConvNet.utils.plot_spikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot spikes of given layers</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rc</strong> (<em>RunControl object</em>) – contains information of backup behaviour</li>
+<li><strong>pre</strong> (<em>SpikeTrain object</em>) – Spiketrains of first layer to plot</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>norm_dog</strong> – Transformed image</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.array, shape=[height, width]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Python Package for Building Deep Spiking Convolutional Neural Networks</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samplecode.html">Sample Code</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">SpikingConvNet</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SpikingConvNet package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">SpikingConvNet</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">SpikingConvNet</a></li>
+      <li>Next: <a href="misc.html" title="next chapter">Miscellaneous</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Sven Gronauer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/SpikingConvNet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
